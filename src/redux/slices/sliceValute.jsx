@@ -18,12 +18,10 @@ export const sliceValute = createAppSlice({
   name: "value",
   initialState,
   selectors: {
-    usersState: (state) => state,
     usersList: (state) => state.value,
   },
   reducers: (create) => ({
     fetchValute: create.asyncThunk(
-      "value/fetchValute",
       async (_, { rejectWithValue }) => {
         try {
           const response = await fetch(
@@ -34,8 +32,8 @@ export const sliceValute = createAppSlice({
             return rejectWithValue("Loading users error!");
           }
 
-          
-          return response.json();
+          const data = await response.json();
+          return data;
         } catch (e) {
           return rejectWithValue(e);
         }
@@ -46,7 +44,7 @@ export const sliceValute = createAppSlice({
           state.error = "1";
         },
         fulfilled: (state, action) => {
-          state.users = action.payload;
+          state.value = action.payload;
           state.error = "2";
         },
         rejected: (state, action) => {
